@@ -1,0 +1,61 @@
+#set ($featureContent = $_XPathTool.selectSingleNode($contentRoot, "/system-data-structure"))
+## Featured Image and Text
+    
+    #set ($featureHeading = "")
+    #set ($featureText = "")
+    #set ($featureAltText = "")
+    #set ($custImgClass = "")
+    #set ($custFeatureClass = "")
+    #set ($featureWrap = "")
+    #set ($imageOrder = "")
+    
+    #set ($featureHeading = $_XPathTool.selectSingleNode($featureContent, "featureHeading").text)
+    #set ($image = $_XPathTool.selectSingleNode($featureContent, "featureImage").getChild("path").text)
+    #set ($featureAltText = $_XPathTool.selectSingleNode($featureContent, "featureAltText").text)
+    #set ($custImgClass = $_XPathTool.selectSingleNode($featureContent, "custImgClass").text)
+    #set ($featureText = $_SerializerTool.serialize($featureContent.getChild("featureText"), true))
+    #set ($custFeatureClass = $_XPathTool.selectSingleNode($featureContent, "custFeatureClass").text)
+    #set ($featureWrap = $_XPathTool.selectSingleNode($featureContent, "featureWrap").text)
+    #set ($imageOrder = $_XPathTool.selectSingleNode($featureContent, "imageOrder").value)
+
+    #if (($image != "/" && $featureAltText != "") || $featureText != "<featureText />" || $featureHeading != "") 
+        <div class="row-fluid $featureWrap">
+            #if ($featureHeading != "")
+                <div class="row-fluid feature-heading">
+                    <h1>$featureHeading</h1>
+                </div>
+            #end
+            #if ($imageOrder == "Yes")
+                <div class="row-fluid feature-content">
+                     #if ($featureText != "<featureText />")
+                        <span class="featuredText $custFeatureClass">
+                            $featureText
+                        </span>
+                    #end
+                    #if ($image != "/")
+                        #if ($featureAltText != "")
+                            <span class="featuredImage $custImgClass">
+                                <img alt="$featureAltText" src="[system-asset]${image}[/system-asset]"/>
+                            </span>
+                       #end    
+                    #end
+                </div>
+            #else
+                <div class="row-fluid feature-content">
+                    #if ($image != "/")
+                        #if ($featureAltText != "")
+                            <span class="featuredImage $custImgClass">
+                                <img alt="$featureAltText" src="[system-asset]${image}[/system-asset]"/>
+                            </span>
+                       #end    
+                    #end
+                    #if ($featureText != "<featureText />")
+                        <span class="featuredText $custFeatureClass">
+                            $featureText
+                        </span>
+                    #end
+                </div>
+            #end    
+        </div>
+    #end    
+## end Featured Image and Text
