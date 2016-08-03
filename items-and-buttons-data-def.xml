@@ -1,0 +1,34 @@
+<system-data-structure>
+    <group identifier="featuredImage" label="Featured Image" collapsed="true">
+        <asset type="file" identifier="featureImage" label="Featured Image Max Width 1200 pixles"/>
+    </group>
+    <text identifier="page_heading" label="Heading"/>
+    <text wysiwyg="true" identifier="above_content" label="Above Items Content"/>
+    <group identifier="buttons" label="Interest Buttons">
+        <asset type="page" identifier="intScholarship" label="Internal Scholarship Link"/>
+        <text identifier="extScholarship" label="-or- External Scholarship Link"/>
+        <text identifier="scholarshipBtnClass" label="Scholarship Button Class"/>
+        <text identifier="donateLabel" label="Donate Button Label" default="Make A Gift"/>
+        <asset type="page" identifier="donateButton" label="Link to Donate Page"/>
+        <text identifier="donateBtnClass" label="Donate Button Class"/>
+        <group identifier="custButton" label="Custom Button" multiple="true" maximum-number="3">
+            <text identifier="button_label" label="Button Label"/>
+            <asset type="page" identifier="internal_link" label="Internal Link"/>
+            <text identifier="external_link" label="-or- External Link"/>
+            <text identifier="custBtnClass" label="Custom Button Class"/>
+        </group>
+    </group>
+    <group identifier="column_group" label="Column Group" multiple="true">
+        <group identifier="column" label="Column" multiple="true" maximum-number="3">
+            <text identifier="itemHeading" label="Item Heading" help-text="Optional heading to introduce item."/>
+            <asset type="file" identifier="image" label="Image" help-text="Optional image to be displayed above text 200 pixels tall"/>
+            <text identifier="altText" label="Image Alt Text" help-text="Image Alt Text For Accessibilty"/>
+            <text identifier="buttonText" label="Button Text" help-text="Text displayed on button."/>
+            <text identifier="btnClass" label="Button Class"/>
+            <asset type="page" identifier="link" label="Internal Link" help-text="Link to internal page for button."/>
+            <text identifier="extLink" label="-or- External Link"/>
+            <text wysiwyg="true" identifier="content" label="Short Introduction" wysiwyg-toolbar-remove="font formatting,font assignment,insert image,insert table,"/>
+        </group>
+    </group>
+    <text wysiwyg="true" identifier="below_content" label="Below Items Content"/>
+</system-data-structure>
