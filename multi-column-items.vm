@@ -1,0 +1,232 @@
+#set ($pageStructure = $_XPathTool.selectSingleNode($contentRoot, "/system-data-structure"))
+
+
+<div class="container-fluid">
+    
+
+    ## Featured Image and Text
+    #set ($featureContent = $_XPathTool.selectNodes($pageStructure, "featuredContent"))
+    
+    #set ($featureText = "")
+    #set ($featureAltText = "")
+    #set ($custImgClass = "")
+    #set ($custFeatureClass = "")
+    #set ($featureWrap = "")
+    
+    #set ($image = $_XPathTool.selectSingleNode($featureContent, "featureImage").getChild("path").text)
+    #set ($featureAltText = $_XPathTool.selectSingleNode($featureContent, "featureAltText").text)
+    #set ($custImgClass = $_XPathTool.selectSingleNode($featureContent, "custImgClass").text)
+    #set ($featureText = $_SerializerTool.serialize($pageStructure.getChild("featuredContent").getChild("featureText"), true))
+    #set ($custFeatureClass = $_XPathTool.selectSingleNode($featureContent, "custFeatureClass").text)
+    #set ($featureWrap = $_XPathTool.selectSingleNode($featureContent, "featureWrap").text)
+
+    #if (($image != "/" && $featureAltText != "") || $featureText != "<featureText />") 
+        <div class="row-fluid $featureWrap">
+            #if ($image != "/")
+                #if ($featureAltText != "")
+                    <span class="featuredImage $custImgClass">
+                        <img alt="$featureAltText" src="[system-asset]${image}[/system-asset]"/>
+                    </span>
+               #end    
+            #end
+            #if ($featureText != "<featureText />")
+                <span class="featuredText $custFeatureClass">
+                    $featureText
+                </span>
+            #end
+        </div>
+    #end
+    ## end Featured Image and Text
+    
+    ## set up page heading
+    #set ($pageHeading = "")
+    #set ($pageHeading =  $pageStructure.getChild("page_heading").text)
+    #if ($pageHeading  != "")
+        <div class="row-fluid pageHeading">
+            <h1>$pageHeading</h1>
+        </div>
+    #end 
+    ## end page heading
+    
+    ##about text WYSIWYG
+    #set ($above_content = $_SerializerTool.serialize($pageStructure.getChild("above_content"), true))
+    #if ($above_content != "<above_content />")
+        <div class="row-fluid above_items">
+            $above_content
+        </div>
+    #end
+    ## end about text WYSIWYG
+    
+    ## set up item heading
+    #set ($itemHeading = "")
+    #set ($itemHeading = $pageStructure.getChild("item_heading").text)
+    #if ($itemHeading != "")
+        <div class="row-fluid itemHeading">
+            <h2>$itemHeading</h2>
+        </div>
+    #end 
+    ## end item heading
+    
+    ## count columns
+    #set ($columnGroups = $_XPathTool.selectNodes($pageStructure, "column_group"))        
+
+    #foreach ($column_group in $columnGroups)
+       
+        #set ($groupClass = "")
+        #set ($groupClass = $column_group.getChild("column_group_setup").getChild("groupClass").text)
+               
+        #set ($imageButtonCheck = $column_group.getChild("column_group_setup").getChild("image-button").value)
+        
+        #set ($columns = $_XPathTool.selectNodes($column_group, "column"))
+        #foreach ($cloumn in $columns)
+            #set ($count = 0)
+            
+            #if ($foreach.count == 1)
+                #set ($colCount = 'span12')
+            #end
+              
+            #if ($foreach.count == 2)
+                #set ($colCount = 'span6')
+            #end
+              
+            #if ($foreach.count == 3)
+                #set ($colCount = 'span4')
+            #end
+              
+            #if ($foreach.count == 4)
+                #set ($colCount = 'span3')
+            #end
+        #end
+        
+
+    
+    ## Image Button Check
+        #if ($imageButtonCheck == "Yes")
+            <div class="row-fluid item-row $groupClass" style="text-align:center;">##row for items      
+                #foreach ($column in $columns)
+                      
+                    #set ($image = "")
+                    #set ($altText = "")
+                    #set ($heading = "")
+                    #set ($link = "")
+                    #set ($extLink = "")
+                    #set ($buttonText = "")
+                    #set ($contentText = "")         
+                  
+                    #set ($image = $_SerializerTool.serialize($column.getChild("image").getChild("path"), true))
+                    #set ($altText = $_SerializerTool.serialize($column.getChild("altText"), true))
+                    #set ($heading = $_SerializerTool.serialize($column.getChild("itemHeading"), true))
+                    #set ($link = $column.getChild("link").getChild("path").text)
+                    #set ($buttonText = $_SerializerTool.serialize($column.getChild("buttonText"), true))
+                    #set ($btnClass = $_SerializerTool.serialize($column.getChild("btnClass"), true))
+                    #set ($contentText = $_SerializerTool.serialize($column.getChild("content"), true))                            
+                    
+                    <div class="$colCount">
+                        <div class="itemContent">
+                            #if ($link == "/") ##for external link button
+                                #set ($extLink = $column.getChild("extLink").text)
+                                #if ($image != "/")
+                                    #if ($altText != "")
+                                        <a href="$extLink" class="btn $btnClass">
+                                            <img alt="$altText" src="[system-asset]${image}[/system-asset]" class ="itemImage" style="max-height: 200px;"/>
+                                            #if ($heading != "")
+                                                <h3>$heading</h3>
+                                            #end
+                                        </a>
+                                    #end
+                                #else
+                                    <a href="$extLink" class="btn $btnClass">
+                                        #if ($heading != "")
+                                            <h3>$heading</h3>
+                                        #end
+                                    </a>
+                                #end
+                                
+                            #else ##for internal link button
+                                #if ($image != "/")
+                                    #if ($altText != "")
+                                        <a href="$link" class="btn $btnClass">
+                                            <img alt="$altText" src="[system-asset]${image}[/system-asset]" class ="itemImage" style="max-height: 200px;"/>
+                                            #if ($heading != "")
+                                                <h3>$heading</h3>
+                                            #end
+                                        </a>
+                                    #end
+                                #else
+                                    <a href="$link" class="btn $btnClass">
+                                        #if ($heading != "")
+                                            <h3>$heading</h3>
+                                        #end
+                                    </a>
+                                #end
+                            #end                                  
+                        </div>##item             
+                    </div>##column
+                #end
+            </div>##item row
+        #else
+            <div class="row-fluid item-row $groupClass">##row for items                                
+                #foreach ($column in $columns)
+                      
+                    #set ($image = "")
+                    #set ($altText = "")
+                    #set ($heading = "")
+                    #set ($link = "")
+                    #set ($extLink = "")
+                    #set ($buttonText = "")
+                    #set ($contentText = "")         
+                  
+                    #set ($image = $_SerializerTool.serialize($column.getChild("image").getChild("path"), true))
+                    #set ($altText = $_SerializerTool.serialize($column.getChild("altText"), true))
+                    #set ($heading = $_SerializerTool.serialize($column.getChild("itemHeading"), true))
+                    #set ($link = $column.getChild("link").getChild("path").text)
+                    #set ($buttonText = $_SerializerTool.serialize($column.getChild("buttonText"), true))
+                    #set ($btnClass = $_SerializerTool.serialize($column.getChild("btnClass"), true))
+                    #set ($contentText = $_SerializerTool.serialize($column.getChild("content"), true)) 
+                    
+                    <div class="$colCount">
+                        <div class="itemContent">
+                            #if ($image != "/")
+                                #if ($altText != "")
+                                    <img alt="$altText" src="[system-asset]${image}[/system-asset]" class ="itemImage" style="max-height: 200px;"/>
+                                #end
+                            #end
+                            #if ($heading != "")
+                                <h3>$heading</h3>
+                            #end
+                            #if ($contentText != "<content />")
+                                <p>$contentText</p>
+                            #end
+                            #if ($buttonText != "")
+                                #if ($link == "/") ##for external link button
+                                    #set ($extLink = $column.getChild("extLink").text)
+                                    <a href="$extLink" class="btn $btnClass" >$buttonText &#187;</a>
+                                #else ##for internal link button
+                                    <a href="$link" class="btn $btnClass" >$buttonText &#187;</a>
+                                #end   
+                            #end
+                        </div>##item             
+                    </div>##column                       
+                #end
+            </div>##item row
+        #end      
+     
+        
+    #end ##foreach column
+##    #end    
+    
+    ## below items WSIWYG
+        #set ($below_content = $_SerializerTool.serialize($pageStructure.getChild("below_content"), true))
+        #if ($below_content != "<below_content />")
+            <div class="row-fluid below_items">
+                $below_content
+            </div>
+        #end
+    ## end about text WSIWYG 
+
+</div>##container  
+
+
+
+
+<div style="clear:both;"></div>
