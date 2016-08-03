@@ -1,0 +1,190 @@
+#set ($pageStructure = $_XPathTool.selectSingleNode($contentRoot, "/system-data-structure"))
+
+<div class="marketing">
+    
+
+    ## Featured Image
+        #set ($featuredImage = $_XPathTool.selectSingleNode($pageStructure, "/system-data-structure/featuredImage"))
+        #set ($image = $_SerializerTool.serialize($featuredImage.getChild("featureImage").getChild("path"), true))
+    
+        #if ($image != "/")
+                <div class="row-fluid featuredImage">
+                    <img src="[system-asset]${image}[/system-asset]"/>
+                </div>
+        #end
+    ## end Featured Image
+    
+    ## set up page heading
+        #set ($pageHeading = $_SerializerTool.serialize($pageStructure.getChild("page_heading"), true))
+        #set ($pageHeading = "")
+        #set ($pageHeading =  $pageStructure.getChild("page_heading").text)
+        #if ($pageHeading  != "")
+            <div class="row-fluid pageHeading">
+                <h2>$pageHeading</h2>
+            </div>
+        #end 
+    ## end page heading
+    
+    ##about text WSIWYG
+        #set ($above_content = $_SerializerTool.serialize($pageStructure.getChild("above_content"), true))
+        #if ($above_content != "<above_content />")
+            <div class="row-fluid above_items">
+                $above_content
+            </div>
+        #end
+    ## end about text WSIWYG 
+    
+    ## count columns
+        #set($columnGroups = $_XPathTool.selectNodes($pageStructure, "column_group"))
+            #foreach ($column_group in $columnGroups)
+                #set($count = 0)
+                #set ($columns = $_XPathTool.selectNodes($column_group, "column"))
+                #foreach ($cloumn in $columns)
+                    #if ($foreach.count == 1)
+                        #set ($colCount = 'span8')
+                        #set ($interestColumn = 'span4')
+                    #end
+                      
+                    #if ($foreach.count == 2)
+                        #set ($colCount = 'span4')
+                        #set ($interestColumn = 'span4')
+                    #end
+                      
+                    #if ($foreach.count == 3)
+                        #set ($colCount = 'span3')
+                        #set ($interestColumn = 'span3')
+                    #end
+                      
+                 
+            #end
+        
+        
+      
+    
+        <div class="row-fluid">##row for items  
+            
+            <div class="interestButtons $interestColumn">
+                        
+            ## set up Scholarships and Donate Buttons
+            
+            #set($buttons = $_XPathTool.selectNodes($pageStructure, "buttons"))
+            
+            #set ($intScholarship = "")
+            #set ($extScholarship = "")
+            #set ($donateButton = "")
+            
+            #set ($intScholarship = $_XPathTool.selectSingleNode($buttons, "intScholarship").getChild("path").text)
+            
+            #if ($intScholarship == "/")
+                #set ($extScholarship = $_XPathTool.selectSingleNode($buttons, "extScholarship").text)
+            #end
+            
+            #set ($scholarshipBtnClass = $_XPathTool.selectSingleNode($buttons, "scholarshipBtnClass").text)
+            
+            #set ($donateButton = $_XPathTool.selectSingleNode($buttons, "donateButton").getChild("path").text)
+            
+            #set ($donateBtnClass = $_XPathTool.selectSingleNode($buttons, "donateBtnClass").text)
+            
+            #if ($extScholarship != "")
+                <a class="btn btn-large btn-block $scholarshipBtnClass" href="$extScholarship" target="_blank">Scholarships</a>
+            #else
+                <a class="btn btn-large btn-block $scholarshipBtnClass" href="$intScholarship">Scholarships</a>
+            #end
+            
+            #if ($donateButton != "/")
+                <a class="btn btn-large btn-block $donateBtnClass" href="$donateButton">Make a Gift</a>
+            #end
+            
+            ## set up custom buttons
+            
+            #set($custButtons = $_XPathTool.selectNodes($pageStructure, "//custButton"))
+            
+            #foreach ($custButton in $custButtons)
+                
+                    
+                    #set ($label = "")
+                    #set ($link = "")
+                    #set ($extLink = "")
+                    #set ($label = $_SerializerTool.serialize($custButton.getChild("button_label"),true)) 
+                    
+                    #set ($link = $_XPathTool.selectSingleNode($custButton, "internal_link").getChild("path").text)
+                    
+                    #if ($link == "/")
+                        #set ($extLink = $_XPathTool.selectSingleNode($custButton, "external_link").text)
+                    #end    
+                    
+                    #set ($custBtnClass = $_XPathTool.selectSingleNode($custButton, "custBtnClass").text)
+                    
+                    #if($extLink != "" && $label != "")
+                        <a class="btn btn-large btn-block $custBtnClass" href="$extLink" target="_blank">$label</a>
+                    #else        
+                        <a class="btn btn-large btn-block $custBtnClass" href="$link">$label</a>
+                    #end        
+                                
+                
+            
+            #end
+            
+            
+            
+        </div> ## interest Buttons
+            
+            #foreach ($column in $columns)
+                  
+                #set ($image = "")
+                #set ($altText = "")
+                #set ($heading = "")
+                #set ($link = "")
+                #set ($extLink = "")
+                #set ($buttonText = "")
+                #set ($contentText = "")         
+              
+                #set ($image = $_SerializerTool.serialize($column.getChild("image").getChild("path"), true))
+                #set ($altText = $_SerializerTool.serialize($column.getChild("altText"), true))
+                #set ($heading = $_SerializerTool.serialize($column.getChild("itemHeading"), true))
+                #set ($link = $column.getChild("link").getChild("path").text)
+                #set ($buttonText = $_SerializerTool.serialize($column.getChild("buttonText"), true))
+                #set ($btnClass = $_SerializerTool.serialize($column.getChild("btnClass"), true))
+                #set ($contentText = $_SerializerTool.serialize($column.getChild("content"), true))                            
+                
+                <div class="$colCount">
+                    <div class="itemContent">
+                        #if ($image != "/")
+                            #if ($altText != "")
+                                <img src="[system-asset]${image}[/system-asset]" class ="itemImage" alt="$altText" style="max-height: 200px;"  />
+                            #end
+                        #end
+                        #if ($heading != "")
+                            <h3>$heading</h3>
+                        #end
+                        #if ($contentText != "<content />")
+                            <p>$contentText</p>
+                        #end
+                        #if ($buttonText != "")
+                            #if ($link == "/") ##for external link button
+                                #set ($extLink = $column.getChild("extLink").text)
+                                <p><a class="btn $btnClass" href="$extLink">$buttonText &#187;</a></p>
+                            #else ##for internal link button
+                                <p><a class="btn $btnClass" href="$link">$buttonText &#187;</a></p>
+                            #end   
+                        #end
+                    </div>##item             
+                </div>##column
+                
+            #end
+        </div>##item row
+
+    ## below items WSIWYG
+        #set ($below_content = $_SerializerTool.serialize($pageStructure.getChild("below_content"), true))
+        #if ($below_content != "<below_content />")
+            <div class="row-fluid below_items">
+                $below_content
+            </div>
+        #end
+    ## end about text WSIWYG 
+
+</div>##container  
+#end
+
+
+<div style="clear:both;"></div>
