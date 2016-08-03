@@ -1,0 +1,32 @@
+<system-data-structure>
+    <group identifier="featuredContent" label="Featured Content" collapsed="true">
+        <asset type="file" identifier="featureImage" label="Featured Image Max Width 1200 pixles"/>
+        <text identifier="featureAltText" label="Feature Image Alt Text"/>
+        <text identifier="custImgClass" label="Custom Image Class"/>
+        <text wysiwyg="true" identifier="featureText" label="Feature Text" wysiwyg-toolbar-remove="insert image,insert table,"/>
+        <text identifier="custFeatureClass" label="Custom Feature Text Class"/>
+        <text identifier="featureWrap" label="Custom Feature Content Wrapper Class"/>
+    </group>
+    <text identifier="page_heading" label="Page Heading"/>
+    <text wysiwyg="true" identifier="above_content" label="Above Items Content"/>
+    <text identifier="item_heading" label="Item Heading"/>
+    <group identifier="column_group" label="Column Group" multiple="true">
+        <group identifier="column" label="Column" multiple="true" maximum-number="4">
+            <text identifier="itemHeading" label="Item Heading" help-text="Optional heading to introduce item."/>
+            <asset type="file" identifier="image" label="Image" help-text="Optional image to be displayed above text 200 pixels tall"/>
+            <text identifier="altText" label="Image Alt Text" help-text="Image Alt Text For Accessibilty"/>
+            <text identifier="buttonText" label="Button Text" help-text="Text displayed on button."/>
+            <text identifier="btnClass" label="Button Class"/>
+            <asset type="page" identifier="link" label="Internal Link" help-text="Link to internal page for button."/>
+            <text identifier="extLink" label="-or- External Link"/>
+            <text wysiwyg="true" identifier="content" label="Short Introduction" wysiwyg-toolbar-remove="font formatting,font assignment,insert image,insert table,"/>
+        </group>
+        <group identifier="column_group_setup" label="Column Group Setup" collapsed="true">
+            <text type="checkbox" identifier="image-button" label="Use Heading and Image as Button" help-text="Places Item Heading and Image in Button - Ignores Button Text and WYSIWYG">
+                <checkbox-item value="Yes"/>
+            </text>
+            <text identifier="groupClass" label="Column Group Wrapper Class"/>
+        </group>
+    </group>
+    <text wysiwyg="true" identifier="below_content" label="Below Items Content"/>
+</system-data-structure>
