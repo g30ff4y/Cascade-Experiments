@@ -1,0 +1,12 @@
+<system-data-structure>
+    <text identifier="featureHeading" label="Feature Heading (H1)"/>
+    <asset type="file" identifier="featureImage" label="Featured Image Max Width 1200 pixles"/>
+    <text identifier="featureAltText" label="Feature Image Alt Text"/>
+    <text identifier="custImgClass" label="Custom Image Class"/>
+    <text wysiwyg="true" identifier="featureText" label="Feature Text" wysiwyg-toolbar-remove="insert image,insert table,"/>
+    <text identifier="custFeatureClass" label="Custom Feature Text Class"/>
+    <text identifier="featureWrap" label="Custom Feature Content Wrapper Class"/>
+    <text type="checkbox" identifier="imageOrder" label="Place Text Before Image" help-text="When using text overlays, check this box.">
+        <checkbox-item value="Yes"/>
+    </text>
+</system-data-structure>
